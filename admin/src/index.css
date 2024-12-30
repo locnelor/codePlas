@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+.self-side-menu .ant-menu {
+  border: none !important;
+}
+.fade-exit {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.fade-exit-active {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+.fade-enter-active,
+.fade-exit-active {
+  transition: all 300ms;
+}

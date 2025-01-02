@@ -59,6 +59,7 @@ type UserPagination {
 }
 
 type Query {
+  getCurrentTotal: Int!
   viewer: SysUserEntity!
   isAdmin: Boolean!
   findUsers(page: Int!, size: Int!, id: Int, account: String, name: String, sys_roleId: Int): UserPagination!

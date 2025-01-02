@@ -1,4 +1,5 @@
 import { SysUserEntity } from "@app/prisma/sys.user.entity/sys.user.entity";
+import { RedisCacheModule } from "@app/redis-cache";
 import { AuthenticationError, ForbiddenError } from "@nestjs/apollo";
 import { ExecutionContext, ForbiddenException, UnauthorizedException, createParamDecorator } from "@nestjs/common";
 import { ExecutionContextHost } from "@nestjs/core/helpers/execution-context-host";
@@ -34,16 +35,42 @@ export class GqlAuthGuard extends AuthGuard("jwt") {
     return user;
   }
 }
+
+
+const userKeysName = "userIdKeys";
+export const setCurrentTotal = async (id: number) => {
+  const redis = RedisCacheModule.getRedisClient()
+  const key = `user:${id}:total`
+  await redis.sadd(key, 1, "EX", 60)
+  await redis.sadd(userKeysName, key)
+}
+export const getCurrentTotal = async () => {
+  const redis = RedisCacheModule.getRedisClient()
+  const members = await redis.smembers(userKeysName)
+  let total = 0
+  for (const key of members) {
+    const exists = await redis.exists(key)
+    if (exists) {
+      total++
+    } else {
+      await redis.srem(userKeysName, key)
+    }
+  }
+  return total
+}
 export const GqlCurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req.user;
+    const user = ctx.getContext().req.user;
+    if (!!user) setCurrentTotal(user.id)
+    return user
   },
 );
-
 export const CurrentUser = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
-    return context.switchToHttp().getRequest().user
+    const user = context.switchToHttp().getRequest().user
+    if (!!user) setCurrentTotal(user.id)
+    return user
   },
 );
 type MenuItem = { path: string, name?: string, parentPath?: string }
@@ -148,26 +175,6 @@ export class AuthPowerGuard extends AuthGuard("jwt") {
     if (num === 401) throw new AuthenticationError('请先登录！');
     if (num === 403) throw new ForbiddenError('权限不足');
     return user
-    if (!this.power) return user
-    if (err || !user) {
-      throw err || new UnauthorizedException('请先登录！');
-    }
-    if (this.power.length === 0) {
-      return user;
-    }
-    const {
-      menu: {
-        role
-      }
-    } = user.role.sys_menu_on_role.find(({ menu }) => {
-      return menu.path === this.config.path
-    }) || { role: 0 };
-    if (!role) throw new ForbiddenException('权限不足');
-    const power = this.power.reduce((acc, item) => acc | item, 0);
-    if ((power & role) !== power) {
-      throw new ForbiddenException('权限不足')
-    }
-    return user
   }
 }
 export const MakeAuthPowerGuard = (path: string, name: string, parentPath?: string) => {
@@ -197,26 +204,6 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
     const num = handleRequest(err, user, this.config, this.power)
     if (num === 401) throw new AuthenticationError('请先登录！');
     if (num === 403) throw new ForbiddenError('权限不足');
-    return user
-    if (!this.power) return user
-    if (err || !user) {
-      throw err || new AuthenticationError('请先登录！');
-    }
-    if (this.power.length === 0) {
-      return user;
-    }
-    const {
-      menu: {
-        role
-      }
-    } = user.role.sys_menu_on_role.find(({ menu }) => {
-      return menu.path === this.config.path
-    }) || { role: 0 };
-    if (!role) throw new ForbiddenError('权限不足');
-    const power = this.power.reduce((acc, item) => acc | item, 0);
-    if ((power & role) !== power) {
-      throw new ForbiddenError('权限不足')
-    }
     return user
   }
 }

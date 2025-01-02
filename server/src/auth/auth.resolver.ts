@@ -2,8 +2,8 @@ import { HashService } from '@app/hash';
 import { PrismaService } from '@app/prisma';
 import { SysUserEntity } from '@app/prisma/sys.user.entity/sys.user.entity';
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GqlAuthGuard, GqlCurrentUser } from './auth.guard';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { getCurrentTotal, GqlAuthGuard, GqlCurrentUser } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ForbiddenError } from '@nestjs/apollo';
 
@@ -15,6 +15,10 @@ export class AuthResolver {
     private readonly hash: HashService,
   ) { }
 
+  @Query(() => Int)
+  getCurrentTotal() {
+    return getCurrentTotal()
+  }
 
   @Query(() => SysUserEntity)
   @UseGuards(new GqlAuthGuard)

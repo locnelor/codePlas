@@ -25,8 +25,8 @@ export const setCookie = (name: string, value: string, options?: any) => {
 export const getCookie = (name: string) => all()[name];
 const all = () => parse(document.cookie)
 const parse = (str: string) => {
-    let obj: { [key in string]: string } = {};
-    let pairs = str.split(/ *; */);
+    const obj: { [key in string]: string } = {};
+    const pairs = str.split(/ *; */);
     let pair;
     if ('' == pairs[0]) return obj;
     for (let i = 0; i < pairs.length; ++i) {

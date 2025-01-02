@@ -33,11 +33,10 @@ const LoginPage = () => {
     },
   })
   const onFinish = useCallback((variables: unknown) => {
-    console.log("finish")
     auth({
       variables
     })
-  }, [])
+  }, [auth])
   return (
     <div className="flex items-center justify-center">
       <div className="w-full max-w-md">

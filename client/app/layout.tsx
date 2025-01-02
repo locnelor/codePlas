@@ -4,6 +4,7 @@ import "./globals.css";
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 import GlobalConfigProvider from "@/lib/GlobalConfigProvider";
+import HomeLayout from "./HomeLayout";
 
 
 
@@ -30,12 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-300 p-2`}
       >
         <GlobalConfigProvider>
           <AntdRegistry>
             <ApolloWrapper>
-              {children}
+              <HomeLayout>
+                {children}
+              </HomeLayout>
             </ApolloWrapper>
           </AntdRegistry>
         </GlobalConfigProvider>

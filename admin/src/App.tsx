@@ -12,6 +12,8 @@ import { ConfigProvider } from 'antd'
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 import SystemRoleActionPage from './pages/system/role/action/page'
+import NoticePage from './pages/notices/page'
+import NoticeAction from './pages/notices/action/page'
 
 function App() {
   const client = makeClient()
@@ -27,6 +29,8 @@ function App() {
               <Route path='/system/role' element={<SystemRolePage />} />
               <Route path='/system/role/action' element={<SystemRoleActionPage />} />
               <Route path='/system/users' element={<SystemUsersPage />} />
+              <Route path='/notices' element={<NoticePage />} />
+              <Route path='/notice/action' element={<NoticeAction />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>
           </Routes>

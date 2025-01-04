@@ -58,6 +58,42 @@ type UserPagination {
   data: [SysUserEntity!]!
 }
 
+type SysNoticeEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  type: String!
+  view: Int!
+  title: String!
+  sys_userId: Float!
+  creator: SysUserEntity
+  context: String
+}
+
+type NoticePagination {
+  total: Int!
+  page: Int!
+  size: Int!
+  data: [SysNoticeEntity!]!
+}
+
+type SysPartnerEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+}
+
+type SysSoftwarePlatformEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  title: String!
+  href: String!
+  description: String!
+}
+
 type Query {
   getCurrentTotal: Int!
   viewer: SysUserEntity!
@@ -65,6 +101,10 @@ type Query {
   findUsers(page: Int!, size: Int!, id: Int, account: String, name: String, sys_roleId: Int): UserPagination!
   getMenu: [SysMenuEntity!]!
   getRole(id: Int, name: String, status: Boolean, comment: String): [SysRoleEntity!]!
+  getNotices(page: Int!, size: Int!, title: String, id: Int, orderBy: String): NoticePagination!
+  getNoticeById(id: Int!): SysNoticeEntity!
+  queryPartner: [SysPartnerEntity!]!
+  querySoftware: [SysSoftwarePlatformEntity!]!
 }
 
 type Mutation {
@@ -76,6 +116,16 @@ type Mutation {
   createRole(name: String!, status: Boolean! = true, comment: String, sys_menu_on_role: [SysMenuOnRoleInput!]): SysRoleEntity!
   updateRole(id: Int!, name: String, status: Boolean, comment: String, sys_menu_on_role: [SysMenuOnRoleInput!]): SysRoleEntity!
   deleteRole(ids: [Int!]!): Int!
+  createNotice(title: String!, type: String!): SysNoticeEntity!
+  updateNotice(id: Int!, title: String!, type: String!): SysNoticeEntity!
+  deleteNotice(ids: [Int!]!): Int!
+  updateNoticeContext(context: String!, id: Int!): Boolean!
+  createPartner(name: String!, order: Int!): SysPartnerEntity!
+  updatePartner(id: Int!, name: String!, order: Int!): SysPartnerEntity!
+  deletePartner(ids: [Int!]!): Int!
+  createSoftware(base64: String!, title: String!, href: String!, description: String!): SysSoftwarePlatformEntity!
+  updateSoftWare(id: Int!, title: String!, href: String!, description: String!, base64: String): SysSoftwarePlatformEntity!
+  deleteSoftware(ids: [Int!]!): Int!
 }
 
 input SysMenuOnRoleInput {

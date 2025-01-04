@@ -1,4 +1,4 @@
-import { gql, useLazyQuery, useQuery } from "@apollo/client"
+import { gql, useQuery } from "@apollo/client"
 import { BaseFields, BasePagination, PaginationFields } from "../../../queries/base"
 import { UserEntity, UserFields } from "../../../queries/user"
 import useRole from "../../../hooks/useRole"
@@ -46,9 +46,16 @@ const SystemUsersPage = () => {
   const roleQuery = useQuery<GetRoleQueryResult>(GetRoleQuery, {
     nextFetchPolicy: "network-only"
   })
-  const [getUsers, usersQuery] = useLazyQuery<FindUsersResult>(FindUsersQuery);
   const [form] = Form.useForm()
-  const a = usePagination(FindUsersQuery)
+  const {
+    research,
+    pagination,
+    data
+  } = usePagination({
+    query: FindUsersQuery,
+    name: "findUsers"
+  })
+  console.log(data)
   const nav = useNavigate()
   const roles = roleQuery.data?.getRole || [];
   const columns = useColumns([
@@ -75,17 +82,20 @@ const SystemUsersPage = () => {
     type: "select",
     label: "角色",
     name: "sys_roleId",
-    options: roles.map((item) => {
+    options: [{
+      label: "全部",
+      value: null
+    }, ...roles.map((item) => {
       return {
         label: item.name,
         value: item.id
       }
-    })
+    })]
   }]
   const onFinish = useCallback((variables: any) => {
-    getUsers({ variables, fetchPolicy: "network-only" })
-  }, [])
-  const dataSource = useDataSource(usersQuery.data?.findUsers?.data)
+    research(variables)
+  }, [research])
+  const dataSource = useDataSource(data)
   return (
     <Card>
       <div className="flex flex-col gap-2">
@@ -100,28 +110,18 @@ const SystemUsersPage = () => {
         />
         <SearchButtonGroup
           onSearch={form.submit}
-          onReset={() => form.resetFields()}
+          onReset={form.resetFields}
         />
         <EditTable
           dataSource={dataSource}
           columns={columns}
-          pagination={{
-            total: usersQuery.data?.findUsers?.total,
-            pageSize: usersQuery.data?.findUsers?.size,
-            current: usersQuery.data?.findUsers?.page,
-            onChange: (page, size) => {
-              form.setFieldsValue({
-                page,
-                size
-              })
-              form.submit()
-            }
-          }}
+          pagination={false}
           hasRole={hasRole}
           onChangeItem={(record, edit) => {
             console.log(record, edit)
           }}
         />
+        {pagination}
       </div>
     </Card>
   )

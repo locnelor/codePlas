@@ -1,5 +1,5 @@
 import { Button, Table, TableProps } from "antd"
-import { HasPowerHandler, UPDATE_POWER } from "../hooks/useRole"
+import { CREATE_POWER, DELETE_POWER, HasPowerHandler, UPDATE_POWER } from "../hooks/useRole"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import FormField, { FormFieldType } from "./FormField"
 import { AnyObject } from "../type"
@@ -9,7 +9,7 @@ import DelPopover from "./DelPopover"
 
 export type EditTableColumns = {
   title: string,
-  dataIndex: string | string[],
+  dataIndex?: string | string[],
   type?: FormFieldType,
   render?: (text: any, record: any) => React.ReactNode
 }
@@ -17,7 +17,7 @@ type EditTableProps<T> = Omit<TableProps, "columns" | "dataSource"> & {
   columns: EditTableColumns[],
   dataSource: T[],
   hasRole: HasPowerHandler,
-  onChangeItem: (record: T, edit: AnyObject) => void,
+  onChangeItem?: (record: T, edit: AnyObject) => void,
   onCreate?: () => void
   onDelete?: (ids: number[]) => void
 }
@@ -38,6 +38,7 @@ function EditTable<T extends AnyObject>({
         ...item,
         render: (text: any, record: any) => {
           if (!!item.render) return item.render(text, record)
+          if (!item.dataIndex) return;
           if (hasRole([UPDATE_POWER]) && item.type && (!!current ? current.id === record.id : true)) {
             let value = text;
             if (!!current && current.id === record.id) {
@@ -57,18 +58,21 @@ function EditTable<T extends AnyObject>({
                 border: "none"
               }}
               onChange={(value) => {
+                if (!item.dataIndex) return;
                 const cur = current || deepCopyObject(record);
                 if (typeof item.dataIndex === "string") {
                   edit[item.dataIndex] = value;
                   cur[item.dataIndex] = value;
                 } else {
                   item.dataIndex.reduce((pre, cur, index) => {
+                    if (!item.dataIndex) return;
                     if (index === item.dataIndex.length - 1) {
                       pre[cur] = value;
                     }
                     return pre[cur]
                   }, edit)
                   item.dataIndex.reduce((pre, cur, index) => {
+                    if (!item.dataIndex) return;
                     if (index === item.dataIndex.length - 1) {
                       pre[cur] = value;
                     }
@@ -98,13 +102,13 @@ function EditTable<T extends AnyObject>({
       className="flex flex-col gap-2"
     >
       <div className="flex justify-end gap-2">
-        {!!onCreate && <Button
+        {!!onCreate && hasRole([CREATE_POWER]) && <Button
           onClick={onCreate}
           type="link"
           shape="circle"
           icon={<PlusOutlined />}
         />}
-        <Button
+        {!!onChangeItem && hasRole([UPDATE_POWER]) && <Button
           onClick={() => {
             if (!onChangeItem) return;
             if (!current) return
@@ -114,8 +118,8 @@ function EditTable<T extends AnyObject>({
           type="link"
           shape="circle"
           icon={<CheckOutlined />}
-        />
-        <Button
+        />}
+        {!!onChangeItem && hasRole([UPDATE_POWER]) && <Button
           onClick={() => {
             setCurrent(null);
             setEdit({});
@@ -125,8 +129,8 @@ function EditTable<T extends AnyObject>({
           danger
           shape="circle"
           icon={<CloseOutlined />}
-        />
-        <DelPopover
+        />}
+        {!!onDelete && hasRole([DELETE_POWER]) && <DelPopover
           onDelete={() => {
             if (!onDelete) return;
             onDelete(selectedRowKeys.map((item) => Number(item)))
@@ -140,7 +144,7 @@ function EditTable<T extends AnyObject>({
             shape="circle"
             icon={<DeleteOutlined />}
           />
-        </DelPopover>
+        </DelPopover>}
       </div>
       <Table
         {...rest}
@@ -148,10 +152,10 @@ function EditTable<T extends AnyObject>({
           if (current?.id === record.id) return "bg-blue-200 hover:bg-blue-300"
           return ""
         }}
-        rowSelection={{
+        rowSelection={!!onChangeItem ? {
           onChange,
           selectedRowKeys
-        }}
+        } : undefined}
         dataSource={dataSource}
         columns={tableColumns}
       />

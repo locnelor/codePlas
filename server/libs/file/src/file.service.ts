@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmdirSync, statSync, unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { cwd } from 'process';
 
@@ -13,8 +13,14 @@ export class FileService {
   public static getSSLPem() {
     return readFileSync(join(this.Root, "keys", "ssh.pem"))
   }
-  private readonly Assets = join(FileService.Root, "assets")
+  public readonly Assets = join(FileService.Root, "assets")
   private readonly configFile = join(this.Assets, "config.json")
+  public join(...paths: string[]) {
+    return join(...paths)
+  }
+  public make(name: string) {
+    return this.mkdir(join(this.Assets, name))
+  }
   public getConfig() {
     try {
       return JSON.parse(readFileSync(this.configFile).toString());
@@ -37,5 +43,35 @@ export class FileService {
   }
   public exists(path: string) {
     return existsSync(path)
+  }
+  public mkdir(path: string) {
+    if (!existsSync(path)) {
+      mkdirSync(path, { recursive: true })
+    }
+    return path;
+  }
+  public destoryDirOrFile(path: string) {
+    if (!existsSync(path)) return;
+    const stat = statSync(path);
+    if (stat.isFile()) {
+      unlinkSync(path)
+      return;
+    }
+    const names = readdirSync(path);
+    for (const name of names) {
+      this.destoryDirOrFile(join(path, name))
+    }
+    rmdirSync(path)
+  }
+
+  public getFileContext(path: string) {
+    if (!existsSync(path)) return null;
+    return readFileSync(path)
+  }
+
+  public base64_to_buffer(base64: string) {
+    const base64Content = base64.includes(",") ? base64.split(",")[1] : base64;
+    const buffer = Buffer.from(base64Content, "base64");
+    return buffer;
   }
 }

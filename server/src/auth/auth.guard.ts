@@ -1,7 +1,7 @@
 import { SysUserEntity } from "@app/prisma/sys.user.entity/sys.user.entity";
 import { RedisCacheModule } from "@app/redis-cache";
 import { AuthenticationError, ForbiddenError } from "@nestjs/apollo";
-import { ExecutionContext, ForbiddenException, UnauthorizedException, createParamDecorator } from "@nestjs/common";
+import { ExecutionContext, UnauthorizedException, createParamDecorator } from "@nestjs/common";
 import { ExecutionContextHost } from "@nestjs/core/helpers/execution-context-host";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { AuthGuard } from "@nestjs/passport";
@@ -208,9 +208,9 @@ export class GqlAuthPowerGuard extends AuthGuard("jwt") {
   }
 }
 export const VIEW_POWER = 1;//查询权限
-export const CREATE_POWER = 1 << 1;//编辑权限
-export const UPDATE_POWER = 1 << 2;//删除权限
-export const DELETE_POWER = 1 << 3;//增加权限
+export const CREATE_POWER = 1 << 1;//创建权限
+export const UPDATE_POWER = 1 << 2;//修改权限
+export const DELETE_POWER = 1 << 3;//删除权限
 export const EXPORT_POWER = 1 << 4;//导出权限
 export const IMPOER_POWER = 1 << 5;//导入权限
 export const ASSIGN_POWER = 1 << 6;//分配权限

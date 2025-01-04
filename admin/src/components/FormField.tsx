@@ -1,4 +1,4 @@
-import { Input, InputNumber, Switch } from "antd"
+import { Input, InputNumber, Select, Switch } from "antd"
 
 
 export type FormFieldType = "text" | "password" | "number" | "select" | "switch" | "date" | "time" | "checkbox" | "radio" | "textarea" | "upload" | "image" | "file" | "url" | "email" | "phone" | "idcard" | "address" | "province" | "city" | "district" | "zip"
@@ -47,6 +47,16 @@ function FormField({
       <Switch
         {...rest}
         checked={value}
+        onChange={(e) => onChange(e)}
+      />
+    )
+  }
+  if (type === "select") {
+    return (
+      <Select
+        style={{ minWidth: 200 }}
+        {...rest}
+        value={value}
         onChange={(e) => onChange(e)}
       />
     )

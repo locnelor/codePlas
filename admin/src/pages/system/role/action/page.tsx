@@ -126,7 +126,6 @@ const SystemRoleActionPage = () => {
     }
   })
   const onFinish = useCallback((variables: any) => {
-    console.log(variables, roleOnMenu)
     if (!!id) {
       updateRole({
         variables: {

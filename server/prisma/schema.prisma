@@ -11,16 +11,17 @@ datasource db {
 }
 
 model sys_user {
-  id         Int       @id @default(autoincrement())
-  createAt   DateTime  @default(now())
-  updateAt   DateTime  @default(now()) @updatedAt
+  id         Int          @id @default(autoincrement())
+  createAt   DateTime     @default(now())
+  updateAt   DateTime     @default(now()) @updatedAt
   name       String
-  account    String    @unique
-  role       sys_role? @relation(fields: [sys_roleId], references: [id])
+  account    String       @unique
+  role       sys_role?    @relation(fields: [sys_roleId], references: [id])
   sys_roleId Int?
   password   String
   salt       String
   loginId    String?
+  sys_notice sys_notice[]
 }
 
 //权限菜单
@@ -59,4 +60,48 @@ model sys_role {
   comment          String?            @db.LongText
   sys_menu_on_role sys_menu_on_role[]
   sys_user         sys_user[]
+}
+
+enum notice_type {
+  WEBSITE //站务公告
+  TEST_INFO //考试信息
+  DYNAMIC //行业动态
+  EXPERIENCE //经验交流
+}
+
+model sys_notice {
+  id         Int         @id @default(autoincrement())
+  createAt   DateTime    @default(now())
+  updateAt   DateTime    @default(now()) @updatedAt
+  view       Int         @default(0)
+  title      String
+  creator    sys_user    @relation(fields: [sys_userId], references: [id])
+  sys_userId Int
+  type       notice_type
+}
+
+//软件平台
+model sys_software_platform {
+  id          Int      @id @default(autoincrement())
+  createAt    DateTime @default(now())
+  updateAt    DateTime @default(now()) @updatedAt
+  title       String
+  href        String
+  description String   @db.Text
+}
+
+//模拟测试
+model sys_test {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+}
+
+//合作机构名单
+model sys_partner {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+  name     String
+  order    Int      @default(0)
 }

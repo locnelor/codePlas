@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { PowerEditTableColumn } from "../components/PowerEditTable";
+import { EditTableColumns } from "../components/EditTable";
 
 
-export const useColumns = (columns: PowerEditTableColumn[], id = "id") => {
+export const useColumns = (columns: EditTableColumns[], id = "id") => {
   const result = useMemo(() => {
     if (!columns) return [];
     return columns.map((item: any, key) => ({

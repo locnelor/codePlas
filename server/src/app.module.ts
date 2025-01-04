@@ -9,6 +9,10 @@ import * as Joi from 'joi';
 import { RedisCacheModule } from '@app/redis-cache';
 import { AuthModule } from './auth/auth.module';
 import { SystemModule } from './system/system.module';
+import { NoticeModule } from './notice/notice.module';
+import { PaperModule } from './paper/paper.module';
+import { PartnerModule } from './partner/partner.module';
+import { SoftwareModule } from './software/software.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -67,7 +71,11 @@ import { SystemModule } from './system/system.module';
     }),
     RedisCacheModule,
     AuthModule,
-    SystemModule
+    SystemModule,
+    NoticeModule,
+    PaperModule,
+    PartnerModule,
+    SoftwareModule
   ],
   controllers: [AppController],
   providers: [AppService],

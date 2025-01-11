@@ -24,15 +24,19 @@ export class NoticeResolver {
     @Args("page", { type: () => Int }) page: number,
     @Args("size", { type: () => Int }) size: number,
     @Args("title", { nullable: true }) title?: string,
+    @Args("type", { type: () => String, nullable: true }) type?: notice_type,
     @Args("id", { type: () => Int, nullable: true }) id?: number,
     @Args("orderBy", { nullable: true, type: () => String }) orderBy: Prisma.SortOrder = 'desc',
   ) {
     const where: Prisma.sys_noticeWhereInput = {};
-    if (title) {
+    if (!!title) {
       where.title = { contains: title };
     }
-    if (id) {
+    if (!!id) {
       where.id = id;
+    }
+    if (!!type) {
+      where.type = type
     }
     const total = await this.prisma.sys_notice.count({ where });
     const notices = await this.prisma.sys_notice.findMany({

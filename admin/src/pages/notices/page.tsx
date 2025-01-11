@@ -29,7 +29,7 @@ export const NoticeTypes = [{
 }, {
   value: "EXPERIENCE",
   label: "经验交流"
-}]
+}].map((item, key) => ({ ...item, key }))
 //获取公告
 export const GetNoticesQuery = gql`
   query GetNotices(
@@ -37,6 +37,7 @@ export const GetNoticesQuery = gql`
     $size: Int!,
     $id: Int,
     $title: String,
+    $type: String,
     $orderBy:String
   ){
     getNotices(
@@ -44,7 +45,8 @@ export const GetNoticesQuery = gql`
       size: $size,
       id: $id,
       title: $title,
-      orderBy:$orderBy
+      orderBy:$orderBy,
+      type: $type
     ){
       ${PaginationFields}
       data{
@@ -143,15 +145,22 @@ const NoticePage = () => {
     type: "select",
     label: "类型",
     name: "type",
-    options: [{ label: "全部" }, ...NoticeTypes]
+    options: [{ label: "全部", value: "", key: -1 }, ...NoticeTypes]
   }]
   const dataSource = useDataSource(data)
   const columns = useColumns([
     { title: "公告ID", dataIndex: "id" },
+    {
+      title: "类型",
+      dataIndex: "type",
+      options: NoticeTypes,
+      type: "select"
+    },
     { title: "标题", dataIndex: "title", type: "textarea" },
     { title: "创建人", dataIndex: ["creator", "name"] },
     {
-      title: "操作", render: (_: any, record: any) => {
+      title: "操作",
+      render: (_: any, record: any) => {
         return (
           <Space>
             <Link to={`/notice/action?id=${record?.id}`}>

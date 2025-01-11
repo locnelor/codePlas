@@ -37,6 +37,7 @@ const FormFactory = ({
             key={key}
           >
             <FormField
+              key={key}
               type={type}
               {...rest}
             />

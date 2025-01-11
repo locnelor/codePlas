@@ -12,7 +12,7 @@ export type EditTableColumns = {
   dataIndex?: string | string[],
   type?: FormFieldType,
   render?: (text: any, record: any) => React.ReactNode
-}
+} & { [key in string]: any }
 type EditTableProps<T> = Omit<TableProps, "columns" | "dataSource"> & {
   columns: EditTableColumns[],
   dataSource: T[],
@@ -33,7 +33,7 @@ function EditTable<T extends AnyObject>({
   const [current, setCurrent] = useState<T | null>(null);
   const [edit, setEdit] = useState<AnyObject>({});
   const tableColumns = useMemo(() => {
-    return columns.map((item) => {
+    return columns.map((item, key) => {
       return ({
         ...item,
         render: (text: any, record: any) => {
@@ -52,10 +52,12 @@ function EditTable<T extends AnyObject>({
               }
             }
             return <FormField
-              type={item.type}
+              {...item}
+              key={key}
               value={value}
               style={{
-                border: "none"
+                border: "none",
+                minWidth: 200
               }}
               onChange={(value) => {
                 if (!item.dataIndex) return;

@@ -101,7 +101,7 @@ type Query {
   findUsers(page: Int!, size: Int!, id: Int, account: String, name: String, sys_roleId: Int): UserPagination!
   getMenu: [SysMenuEntity!]!
   getRole(id: Int, name: String, status: Boolean, comment: String): [SysRoleEntity!]!
-  getNotices(page: Int!, size: Int!, title: String, id: Int, orderBy: String): NoticePagination!
+  getNotices(page: Int!, size: Int!, title: String, type: String, id: Int, orderBy: String): NoticePagination!
   getNoticeById(id: Int!): SysNoticeEntity!
   queryPartner: [SysPartnerEntity!]!
   querySoftware: [SysSoftwarePlatformEntity!]!
@@ -124,7 +124,7 @@ type Mutation {
   updatePartner(id: Int!, name: String!, order: Int!): SysPartnerEntity!
   deletePartner(ids: [Int!]!): Int!
   createSoftware(base64: String!, title: String!, href: String!, description: String!): SysSoftwarePlatformEntity!
-  updateSoftWare(id: Int!, title: String!, href: String!, description: String!, base64: String): SysSoftwarePlatformEntity!
+  updateSoftware(id: Int!, title: String!, href: String!, description: String!, base64: String): SysSoftwarePlatformEntity!
   deleteSoftware(ids: [Int!]!): Int!
 }
 

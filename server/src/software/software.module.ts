@@ -6,6 +6,8 @@ import { FileModule } from '@app/file';
 
 @Module({
   imports: [PrismaModule, FileModule],
-  providers: [SoftwareResolver, SoftwareService]
+  providers: [SoftwareResolver, SoftwareService],
+  controllers: [],
+  exports: [SoftwareService]
 })
 export class SoftwareModule { }

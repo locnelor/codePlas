@@ -14,6 +14,8 @@ import 'dayjs/locale/zh-cn';
 import SystemRoleActionPage from './pages/system/role/action/page'
 import NoticePage from './pages/notices/page'
 import NoticeAction from './pages/notices/action/page'
+import PartnerPage from './pages/partner/page'
+import SoftwarePage from './pages/software/page'
 
 function App() {
   const client = makeClient()
@@ -31,6 +33,8 @@ function App() {
               <Route path='/system/users' element={<SystemUsersPage />} />
               <Route path='/notices' element={<NoticePage />} />
               <Route path='/notice/action' element={<NoticeAction />} />
+              <Route path='/partner' element={<PartnerPage />} />
+              <Route path='/software' element={<SoftwarePage />} />
               <Route path='*' element={<NotFoundPage />} />
             </Route>
           </Routes>

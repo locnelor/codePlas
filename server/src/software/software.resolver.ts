@@ -44,7 +44,7 @@ export class SoftwareResolver {
 
   @Mutation(() => SysSoftwarePlatformEntity)
   @UseGuards(SoftwareGuard([UPDATE_POWER]))
-  async updateSoftWare(
+  async updateSoftware(
     @Args("id", { type: () => Int }) id: number,
     @Args("title") title: string,
     @Args("href") href: string,

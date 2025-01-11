@@ -50,15 +50,16 @@ export class PartnerResolver {
 
   @Mutation(() => Int)
   @UseGuards(PartnerGuard([DELETE_POWER]))
-  deletePartner(
+  async deletePartner(
     @Args("ids", { type: () => [Int] }) ids: number[]
   ) {
-    return this.prisma.sys_partner.deleteMany({
+    const { count } = await this.prisma.sys_partner.deleteMany({
       where: {
         id: {
           in: ids
         }
       }
     })
+    return count
   }
 }

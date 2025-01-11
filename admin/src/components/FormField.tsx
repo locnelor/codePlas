@@ -1,7 +1,8 @@
 import { Input, InputNumber, Select, Switch } from "antd"
+import CoverInput from "./CoverInput"
 
 
-export type FormFieldType = "text" | "password" | "number" | "select" | "switch" | "date" | "time" | "checkbox" | "radio" | "textarea" | "upload" | "image" | "file" | "url" | "email" | "phone" | "idcard" | "address" | "province" | "city" | "district" | "zip"
+export type FormFieldType = "text" | "password" | "number" | "select" | "switch" | "date" | "time" | "checkbox" | "radio" | "textarea" | "cover"
 type FormFieldProps = {
   type?: FormFieldType,
   value?: any,
@@ -55,6 +56,15 @@ function FormField({
     return (
       <Select
         style={{ minWidth: 200 }}
+        {...rest}
+        value={value}
+        onChange={(e) => onChange(e)}
+      />
+    )
+  }
+  if (type === "cover") {
+    return (
+      <CoverInput
         {...rest}
         value={value}
         onChange={(e) => onChange(e)}

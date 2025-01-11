@@ -39,7 +39,7 @@ function EditTable<T extends AnyObject>({
         render: (text: any, record: any) => {
           if (!!item.render) return item.render(text, record)
           if (!item.dataIndex) return;
-          if (hasRole([UPDATE_POWER]) && item.type && (!!current ? current.id === record.id : true)) {
+          if (hasRole([UPDATE_POWER]) && item.type) {
             let value = text;
             if (!!current && current.id === record.id) {
               if (typeof item.dataIndex === "string") {
@@ -51,6 +51,7 @@ function EditTable<T extends AnyObject>({
                 }, current)
               }
             }
+            const readOnly = (!!current ? current.id === record.id : true)
             return <FormField
               {...item}
               key={key}
@@ -59,6 +60,7 @@ function EditTable<T extends AnyObject>({
                 border: "none",
                 minWidth: 200
               }}
+              readOnly={!readOnly}
               onChange={(value) => {
                 if (!item.dataIndex) return;
                 const cur = current || deepCopyObject(record);

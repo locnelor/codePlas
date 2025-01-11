@@ -14,7 +14,9 @@ function FormField({
   value,
   onChange = () => { },
   ...rest
-}: FormFieldProps) {
+}: FormFieldProps & {
+  [key in string]: any
+}) {
   if (type === "text") {
     return (
       <Input

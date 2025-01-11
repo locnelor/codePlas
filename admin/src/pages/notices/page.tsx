@@ -85,7 +85,7 @@ export const UpdateNoticeMutation = gql`
   mutation UpdateNotice(
     $id: Int!,
     $type: String!,
-    $title: String
+    $title: String!
   ){
     updateNotice(
       id: $id,
@@ -126,6 +126,14 @@ const NoticePage = () => {
     onCompleted: ({ deleteNotice }) => {
       message.success(`成功删除${deleteNotice}条数据`)
       form.submit()
+    },
+    onError: (err) => {
+      gqlError(err)
+    }
+  })
+  const [updateNotice] = useMutation(UpdateNoticeMutation, {
+    onCompleted: () => {
+      message.success("操作成功")
     },
     onError: (err) => {
       gqlError(err)
@@ -231,6 +239,12 @@ const NoticePage = () => {
           }}
           onChangeItem={(record, edit) => {
             console.log(record, edit)
+            updateNotice({
+              variables: {
+                ...record,
+                ...edit
+              }
+            })
           }}
         />
         <div className="flex justify-end">

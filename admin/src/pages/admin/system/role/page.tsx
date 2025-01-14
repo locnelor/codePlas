@@ -1,19 +1,19 @@
 import { gql, useLazyQuery, useMutation } from "@apollo/client"
-import { BaseFields } from "../../../queries/base"
-import { RoleFields } from "../../../queries/role"
-import { MenuOnRoleEntity, MenuOnRoleFields } from "../../../queries/on"
+import { BaseFields } from "../../../../queries/base"
+import { RoleFields } from "../../../../queries/role"
+import { MenuOnRoleEntity, MenuOnRoleFields } from "../../../../queries/on"
 import { Card, Form, message, Space } from 'antd';
-import { useColumns, useDataSource } from "../../../hooks/useTable"
-import useRole from "../../../hooks/useRole"
-import SearchForm from "../../../components/SearchForm"
+import { useColumns, useDataSource } from "../../../../hooks/useTable"
+import useRole from "../../../../hooks/useRole"
+import SearchForm from "../../../../components/SearchForm"
 import { useCallback } from "react"
-import { TextDeleteButton, TextViewButton } from "../../../components/BaseRoleButtonGroups"
+import { TextDeleteButton, TextViewButton } from "../../../../components/BaseRoleButtonGroups"
 import { Link, useNavigate } from "react-router"
-import SearchButtonGroup from "../../../components/SearchButtonGroup"
-import EditTable from "../../../components/EditTable"
-import { FormFactoryItem } from "../../../components/FormFactory";
-import gqlError from "../../../libs/gql-error";
-import DelPopover from "../../../components/DelPopover";
+import SearchButtonGroup from "../../../../components/SearchButtonGroup"
+import EditTable from "../../../../components/EditTable"
+import { FormFactoryItem } from "../../../../components/FormFactory";
+import gqlError from "../../../../libs/gql-error";
+import DelPopover from "../../../../components/DelPopover";
 import { UpdateRoleMutation } from "./action/page";
 //获取角色
 export const GetRoleQuery = gql`
@@ -54,7 +54,7 @@ export const DelteRoleMutation = gql`
   }
 `
 
-const SystemRolePage = () => {
+const AdminSystemRolePage = () => {
   const [getRole, roleQuery] = useLazyQuery<GetRoleQueryResult>(GetRoleQuery)
   const roles = useDataSource(roleQuery.data?.getRole);
   const hasRole = useRole("/system/role");
@@ -183,6 +183,6 @@ const SystemRolePage = () => {
     </Card>
   )
 }
-export default SystemRolePage
+export default AdminSystemRolePage
 
 

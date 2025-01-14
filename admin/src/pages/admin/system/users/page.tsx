@@ -1,17 +1,17 @@
 import { gql, useQuery } from "@apollo/client"
-import { BaseFields, BasePagination, PaginationFields } from "../../../queries/base"
-import { UserEntity, UserFields } from "../../../queries/user"
-import useRole from "../../../hooks/useRole"
+import { BaseFields, BasePagination, PaginationFields } from "../../../../queries/base"
+import { UserEntity, UserFields } from "../../../../queries/user"
+import useRole from "../../../../hooks/useRole"
 import { GetRoleQuery, GetRoleQueryResult } from "../role/page"
 import { Card, Form } from "antd"
 import { useNavigate } from "react-router"
-import { useColumns, useDataSource } from "../../../hooks/useTable"
-import { FormFactoryItem } from "../../../components/FormFactory"
-import SearchForm from "../../../components/SearchForm"
+import { useColumns, useDataSource } from "../../../../hooks/useTable"
+import { FormFactoryItem } from "../../../../components/FormFactory"
+import SearchForm from "../../../../components/SearchForm"
 import { useCallback } from "react"
-import SearchButtonGroup from "../../../components/SearchButtonGroup"
-import EditTable from "../../../components/EditTable"
-import usePagination from "../../../hooks/usePagination"
+import SearchButtonGroup from "../../../../components/SearchButtonGroup"
+import EditTable from "../../../../components/EditTable"
+import usePagination from "../../../../hooks/usePagination"
 
 export const FindUsersQuery = gql`
   query FindUsers(
@@ -41,7 +41,7 @@ export const FindUsersQuery = gql`
 export interface FindUsersResult {
   findUsers: BasePagination<UserEntity>
 }
-const SystemUsersPage = () => {
+const AdminSystemUsersPage = () => {
   const hasRole = useRole("/system/users")
   const roleQuery = useQuery<GetRoleQueryResult>(GetRoleQuery, {
     nextFetchPolicy: "network-only"
@@ -126,4 +126,4 @@ const SystemUsersPage = () => {
     </Card>
   )
 }
-export default SystemUsersPage
+export default AdminSystemUsersPage

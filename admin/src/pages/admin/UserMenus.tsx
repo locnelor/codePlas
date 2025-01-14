@@ -1,9 +1,9 @@
 import { gql, useQuery } from "@apollo/client"
-import { UserEntity } from "../queries/user"
+import { UserEntity } from "../../queries/user"
 import { Menu } from "antd"
 import { useCallback, useMemo } from "react"
-import { MenuEntity, MenuFields } from "../queries/menu"
-import { MenuOnRoleEntity } from "../queries/on"
+import { MenuEntity, MenuFields } from "../../queries/menu"
+import { MenuOnRoleEntity } from "../../queries/on"
 import { useLocation, useNavigate } from "react-router"
 import {
   HomeOutlined,
@@ -12,7 +12,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { BaseFields } from "../queries/base"
+import { BaseFields } from "../../queries/base"
 //获取菜单
 export const GetMenuQuery = gql`
   query GetMenu{
@@ -52,11 +52,12 @@ const filterTreeMenu = (menu: MenuEntity[], roles: MenuOnRoleEntity[]) => {
 }
 const renderTreeMenu: any = (menu: MenuEntity[]) => {
   return menu.map((item: any) => {
+    const key = `/admin${item.path}`
     return {
-      key: item.path.toString(),
+      key,
       icon: icons[item.path as keyof typeof icons],
       label: item.name,
-      path: item.path,
+      path: key,
       children: item.children.length > 0 ? renderTreeMenu(item.children) : undefined
     }
   })
@@ -71,7 +72,7 @@ const UserMenus = ({
   const { data } = useQuery<GetMenuQueryResult>(GetMenuQuery)
   const items = useMemo(() => {
     const home = {
-      key: "/",
+      key: "/admin",
       label: "首页",
       icon: <HomeOutlined />,
     }

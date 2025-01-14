@@ -1,21 +1,21 @@
 import { gql, useMutation } from "@apollo/client"
-import { BaseFields, BasePagination, PaginationFields } from "../../queries/base"
-import { NoticeEntity, NoticeFields } from "../../queries/notices"
-import { UserFields } from "../../queries/user"
-import usePagination from "../../hooks/usePagination"
-import { FormFactoryItem } from "../../components/FormFactory"
+import { BaseFields, BasePagination, PaginationFields } from "../../../queries/base"
+import { NoticeEntity, NoticeFields } from "../../../queries/notices"
+import { UserFields } from "../../../queries/user"
+import usePagination from "../../../hooks/usePagination"
+import { FormFactoryItem } from "../../../components/FormFactory"
 import { Card, Form, message, Space } from "antd"
-import SearchForm from "../../components/SearchForm"
-import SearchButtonGroup from "../../components/SearchButtonGroup"
-import EditTable from "../../components/EditTable"
-import { useColumns, useDataSource } from "../../hooks/useTable"
-import useRole from "../../hooks/useRole"
-import useOpen from "../../hooks/useOpen"
-import FormModal from "../../components/FormModal"
+import SearchForm from "../../../components/SearchForm"
+import SearchButtonGroup from "../../../components/SearchButtonGroup"
+import EditTable from "../../../components/EditTable"
+import { useColumns, useDataSource } from "../../../hooks/useTable"
+import useRole from "../../../hooks/useRole"
+import useOpen from "../../../hooks/useOpen"
+import FormModal from "../../../components/FormModal"
 import { Link } from "react-router"
-import { TextViewButton, TextDeleteButton } from "../../components/BaseRoleButtonGroups"
-import DelPopover from "../../components/DelPopover"
-import gqlError from "../../libs/gql-error"
+import { TextViewButton, TextDeleteButton } from "../../../components/BaseRoleButtonGroups"
+import DelPopover from "../../../components/DelPopover"
+import gqlError from "../../../libs/gql-error"
 
 export const NoticeTypes = [{
   value: "WEBSITE",
@@ -109,7 +109,7 @@ export const DeleteNoticeMutation = gql`
   }
 `
 
-const NoticePage = () => {
+const AdminNoticePage = () => {
   const {
     pagination,
     refetch,
@@ -254,4 +254,4 @@ const NoticePage = () => {
     </Card>
   )
 }
-export default NoticePage
+export default AdminNoticePage

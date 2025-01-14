@@ -1,9 +1,11 @@
-"use client"
+import { getQuery } from "@/lib/client";
+import { PaginationFields, BaseFields, BasePagination } from "@/queries/base";
+import { NoticeFields, NoticeEntity } from "@/queries/notices";
+import { UserFields } from "@/queries/user";
+import { gql } from "@apollo/client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-// import useViewer from "@/hooks/viewer/useViewer";
-
 type TitleProps = {
   title: string,
   href: string,
@@ -79,15 +81,86 @@ const Divider = () => {
     <div className="h-1 border-t border-b border-blue-600 my-1"></div>
   )
 }
-const HomePage = () => {
-  // const { viewer } = useViewer()
-  const list1 = [
-    { title: "增加NOC题库（全国中小学信息技术创新与实践大赛）", time: "2024-04-30" },
-    { title: "Windows客户端更新 V1.0.5.0，C++程序评分", time: "2024-04-24" },
-    { title: "机构账号上线进行测试", time: "2023-09-21" },
-    { title: "完善题库积分奖励", time: "2023-08-31" },
-    { title: "GESP计算机基础知识", time: "2023-08-26" }
-  ]
+[{
+  value: "WEBSITE",
+  label: "站务公告"
+}, {
+  value: "TEST_INFO",
+  label: "考试信息"
+}, {
+  value: "DYNAMIC",
+  label: "行业动态"
+}, {
+  value: "EXPERIENCE",
+  label: "经验交流"
+}]
+//获取公告
+export const GetNoticesQuery = gql`
+  query GetNotices(
+    $page: Int!,
+    $size: Int!,
+    $id: Int,
+    $title: String,
+    $type: String,
+    $orderBy:String
+  ){
+    getNotices(
+      page: $page,
+      size: $size,
+      id: $id,
+      title: $title,
+      orderBy:$orderBy,
+      type: $type
+    ){
+      ${PaginationFields}
+      data{
+        ${BaseFields}
+        ${NoticeFields}
+        creator{
+          ${UserFields}
+          ${BaseFields}
+        }
+      }
+    }
+  }
+`
+export interface GetNoticesResult {
+  getNotices: BasePagination<NoticeEntity>
+}
+const HomePage = async () => {
+  const [WEBSITE] = await getQuery<GetNoticesResult>({
+    query: GetNoticesQuery,
+    variables: {
+      page: 1,
+      size: 5,
+      type: "WEBSITE",
+    }
+  })
+  const [TEST_INFO] = await getQuery<GetNoticesResult>({
+    query: GetNoticesQuery,
+    variables: {
+      page: 1,
+      size: 5,
+      type: "TEST_INFO",
+    }
+  })
+  const [DYNAMIC] = await getQuery<GetNoticesResult>({
+    query: GetNoticesQuery,
+    variables: {
+      page: 1,
+      size: 5,
+      type: "DYNAMIC",
+    }
+  })
+  const [EXPERIENCE] = await getQuery<GetNoticesResult>({
+    query: GetNoticesQuery,
+    variables: {
+      page: 1,
+      size: 5,
+      type: "EXPERIENCE",
+    }
+  })
+
   return (
     <div>
       <Title
@@ -98,14 +171,14 @@ const HomePage = () => {
       <Divider />
       <div className="flex flex-col gap-2">
         {
-          list1.map((item, index) => {
+          WEBSITE.getNotices.data.map((item, index) => {
             return (
               <ListLine
                 key={index}
                 title={item.title}
                 src="/images/icons/icon_leaf.png"
                 href="/siteNotice"
-                time={item.time}
+                time={item.createAt.toString()}
               />
             )
           })
@@ -119,19 +192,20 @@ const HomePage = () => {
       <Divider />
       <div className="flex flex-col gap-2">
         {
-          list1.map((item, index) => {
+          TEST_INFO.getNotices.data.map((item, index) => {
             return (
               <ListLine
                 key={index}
                 title={item.title}
                 src="/images/icons/icon_art.png"
                 href="/testInfo"
-                time={item.time}
+                time={item.createAt.toString()}
               />
             )
           })
         }
       </div>
+
       <Title
         title="模拟测试"
         href="/robotBank"
@@ -157,18 +231,50 @@ const HomePage = () => {
           )
         })}
       </div>
+
+
+
       <Title
         title="行业动态"
         href="/news"
         src="/images/icons/icon_news.png"
       />
       <Divider />
-      {/* <Title
-        title="知识大纲"
+      <div className="flex flex-col gap-2">
+        {
+          DYNAMIC.getNotices.data.map((item, index) => {
+            return (
+              <ListLine
+                key={index}
+                title={item.title}
+                src="/images/icons/icon_art.png"
+                href="/testInfo"
+                time={item.createAt.toString()}
+              />
+            )
+          })
+        }
+      </div>
+      <Title
+        title="经验交流"
         href="/news"
         src="/images/icons/icon_class.png"
-      /> */}
-
+      />
+       <div className="flex flex-col gap-2">
+        {
+          EXPERIENCE.getNotices.data.map((item, index) => {
+            return (
+              <ListLine
+                key={index}
+                title={item.title}
+                src="/images/icons/icon_art.png"
+                href="/testInfo"
+                time={item.createAt.toString()}
+              />
+            )
+          })
+        }
+      </div>
     </div>
   );
 };

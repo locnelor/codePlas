@@ -3,11 +3,11 @@ import { Button, Card, message } from "antd"
 import { Editor } from 'primereact/editor';
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import HeadBack from "../../../components/HeadBack";
-import { BaseFields } from "../../../queries/base";
-import { NoticeFields } from "../../../queries/notices";
-import { UserFields } from "../../../queries/user";
-import gqlError from "../../../libs/gql-error";
+import HeadBack from "../../../../components/HeadBack";
+import { BaseFields } from "../../../../queries/base";
+import { NoticeFields } from "../../../../queries/notices";
+import { UserFields } from "../../../../queries/user";
+import gqlError from "../../../../libs/gql-error";
 
 
 
@@ -38,7 +38,7 @@ export const UpdateNoticeContextMutation = gql`
     )
   }
 `
-const NoticeAction = () => {
+const AdminNoticeAction = () => {
   const [context, setContext] = useState("")
   const location = useLocation();
   const nav = useNavigate();
@@ -101,4 +101,4 @@ const NoticeAction = () => {
     </Card>
   )
 }
-export default NoticeAction
+export default AdminNoticeAction

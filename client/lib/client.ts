@@ -27,5 +27,5 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
 export const getQuery = async <T>(option: QueryOptions<OperationVariables, any>) => {
   let err: ApolloError | undefined;
   const result: { data: T } = await query(option).catch(e => err = e);
-  return [result, err] as const
+  return [result?.data, err] as const
 }

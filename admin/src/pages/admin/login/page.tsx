@@ -1,7 +1,7 @@
 import { Input, Button, Form } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import gqlError from "../../libs/gql-error";
+import gqlError from "../../../libs/gql-error";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
 
@@ -22,7 +22,7 @@ const IsAdminQuery = gql`
     isAdmin
   }
 `
-const LoginPage = () => {
+const AdminLoginPage = () => {
   const { data } = useQuery(IsAdminQuery)
   const nav = useNavigate()
   const [auth, { loading }] = useMutation(AuthMutation, {
@@ -94,4 +94,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

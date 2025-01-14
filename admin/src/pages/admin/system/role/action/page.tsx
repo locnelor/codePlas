@@ -3,14 +3,14 @@ import { useLocation, useNavigate } from "react-router"
 import { GetMenuQuery, GetMenuQueryResult } from "../../../UserMenus";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button, Card, Checkbox, Col, Form, message, Row, Space, Table } from "antd";
-import HeadBack from "../../../../components/HeadBack";
+import HeadBack from "../../../../../components/HeadBack";
 import { GetRoleQuery, GetRoleQueryResult } from "../page";
-import gqlError from "../../../../libs/gql-error";
-import FormFactory, { FormFactoryItem } from "../../../../components/FormFactory";
-import { MenuEntity } from "../../../../queries/menu";
-import { useColumns, useDataSource } from "../../../../hooks/useTable";
-import { PowerArray } from "../../../../hooks/useRole";
-import { deepCopyArray } from "../../../../libs/utils";
+import gqlError from "../../../../../libs/gql-error";
+import FormFactory, { FormFactoryItem } from "../../../../../components/FormFactory";
+import { MenuEntity } from "../../../../../queries/menu";
+import { useColumns, useDataSource } from "../../../../../hooks/useTable";
+import { PowerArray } from "../../../../../hooks/useRole";
+import { deepCopyArray } from "../../../../../libs/utils";
 
 export const CreateRoleMutation = gql`
   mutation CreateRole(
@@ -59,7 +59,7 @@ export const UpdateRoleMutation = gql`
  * 编辑使用该角色的用户
  * 编辑角色的菜单权限
  */
-const SystemRoleActionPage = () => {
+const AdminSystemRoleActionPage = () => {
   const location = useLocation();
   const nav = useNavigate();
   const client = useApolloClient();
@@ -275,4 +275,4 @@ const SystemRoleActionPage = () => {
     </div>
   )
 }
-export default SystemRoleActionPage
+export default AdminSystemRoleActionPage

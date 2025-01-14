@@ -1,17 +1,17 @@
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { Card, Form, Image, message, Space } from "antd"
-import { BaseFields } from "../../queries/base"
-import gqlError from "../../libs/gql-error"
-import { useColumns, useDataSource } from "../../hooks/useTable"
-import EditTable from "../../components/EditTable"
-import useRole from "../../hooks/useRole"
-import FormModal from "../../components/FormModal"
-import useOpen from "../../hooks/useOpen"
+import { BaseFields } from "../../../queries/base"
+import gqlError from "../../../libs/gql-error"
+import { useColumns, useDataSource } from "../../../hooks/useTable"
+import EditTable from "../../../components/EditTable"
+import useRole from "../../../hooks/useRole"
+import FormModal from "../../../components/FormModal"
+import useOpen from "../../../hooks/useOpen"
 import { Link } from "react-router"
-import { TextViewButton, TextDeleteButton } from "../../components/BaseRoleButtonGroups"
-import DelPopover from "../../components/DelPopover"
-import { SoftwareEntity, SoftwareFields } from "../../queries/software"
-import { joinPath } from "../../libs/http-fetch"
+import { TextViewButton, TextDeleteButton } from "../../../components/BaseRoleButtonGroups"
+import DelPopover from "../../../components/DelPopover"
+import { SoftwareEntity, SoftwareFields } from "../../../queries/software"
+import { joinPath } from "../../../libs/http-fetch"
 
 
 export const QuerySoftwareQuery = gql`
@@ -70,7 +70,7 @@ export const DeleteSoftwareMutation = gql`
     )
   }
 `
-const SoftwarePage = () => {
+const AdminSoftwarePage = () => {
   const { data, loading, refetch } = useQuery<QuerySoftwareResult>(QuerySoftwareQuery)
   const [update, { loading: updateLoading }] = useMutation(UpdateSoftwareMutation, {
     onCompleted() {
@@ -200,4 +200,4 @@ const SoftwarePage = () => {
     </Card>
   )
 }
-export default SoftwarePage
+export default AdminSoftwarePage

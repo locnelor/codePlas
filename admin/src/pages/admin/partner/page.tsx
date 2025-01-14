@@ -1,16 +1,16 @@
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { Card, Form, message, Space } from "antd"
-import { BaseFields } from "../../queries/base"
-import { PartnerEntity, PartnerFields } from "../../queries/partner"
-import gqlError from "../../libs/gql-error"
-import { useColumns, useDataSource } from "../../hooks/useTable"
-import EditTable from "../../components/EditTable"
-import useRole from "../../hooks/useRole"
-import FormModal from "../../components/FormModal"
-import useOpen from "../../hooks/useOpen"
+import { BaseFields } from "../../../queries/base"
+import { PartnerEntity, PartnerFields } from "../../../queries/partner"
+import gqlError from "../../../libs/gql-error"
+import { useColumns, useDataSource } from "../../../hooks/useTable"
+import EditTable from "../../../components/EditTable"
+import useRole from "../../../hooks/useRole"
+import FormModal from "../../../components/FormModal"
+import useOpen from "../../../hooks/useOpen"
 import { Link } from "react-router"
-import { TextViewButton, TextDeleteButton } from "../../components/BaseRoleButtonGroups"
-import DelPopover from "../../components/DelPopover"
+import { TextViewButton, TextDeleteButton } from "../../../components/BaseRoleButtonGroups"
+import DelPopover from "../../../components/DelPopover"
 
 
 export const QueryPartnerQuery = gql`
@@ -61,7 +61,7 @@ export const DeletePartnerMutation = gql`
     )
   }
 `
-const PartnerPage = () => {
+const AdminPartnerPage = () => {
   const { data, loading, refetch } = useQuery<QueryPArtnerResult>(QueryPartnerQuery)
   const [update, { loading: updateLoading }] = useMutation(UpdatePartnerMutation, {
     onCompleted() {
@@ -161,4 +161,4 @@ const PartnerPage = () => {
     </Card>
   )
 }
-export default PartnerPage
+export default AdminPartnerPage

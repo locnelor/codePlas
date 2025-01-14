@@ -1,7 +1,7 @@
 import { Input, Button, Form, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { gql, useApolloClient, useMutation } from "@apollo/client";
-import gqlError from "../../libs/gql-error";
+import gqlError from "../../../libs/gql-error";
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
 
@@ -19,7 +19,7 @@ const InitAdminMutation = gql`
     )
   }
 `
-const InitPage = () => {
+const AdminInitPage = () => {
   const nav = useNavigate()
   const client = useApolloClient()
   const [auth, { loading }] = useMutation(InitAdminMutation, {
@@ -112,4 +112,4 @@ const InitPage = () => {
   );
 };
 
-export default InitPage;
+export default AdminInitPage;

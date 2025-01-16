@@ -58,7 +58,6 @@ function EditTable<T extends AnyObject>({
               value={value}
               style={{
                 border: "none",
-                minWidth: 200
               }}
               readOnly={!readOnly}
               onChange={(value) => {

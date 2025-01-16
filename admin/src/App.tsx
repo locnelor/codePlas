@@ -18,6 +18,10 @@ import AdminNoticePage from './pages/admin/notices/page'
 import AdminNoticeAction from './pages/admin/notices/action/page'
 import AdminPartnerPage from './pages/admin/partner/page'
 import AdminSoftwarePage from './pages/admin/software/page'
+import AdminOutlinePage from './pages/admin/outline/page'
+import NoticePage from './pages/notice/page'
+import SoftwarePage from './pages/software/page'
+import PartnerPage from './pages/partners/page'
 
 function App() {
   const client = makeClient()
@@ -28,11 +32,15 @@ function App() {
           <Routes>
             <Route element={<HomeLayout />}>
               <Route path='/' element={<HomePage />} />
+              <Route path='/:type/notice' element={<NoticePage />} />
+              <Route path='/software' element={<SoftwarePage />} />
+              <Route path='/partners' element={<PartnerPage />} />
+              <Route path='*' element={<NotFoundPage />} />
             </Route>
+            <Route path='/admin/login' element={<AdminLoginPage />} />
+            <Route path='/admin/init' element={<AdminInitPage />} />
             <Route path='/admin' element={<AdminLayout />}>
               <Route path='' element={<AdminPage />} />
-              <Route path='login' element={<AdminLoginPage />} />
-              <Route path='init' element={<AdminInitPage />} />
               <Route path='system/role' element={<AdminSystemRolePage />} />
               <Route path='system/role/action' element={<AdminSystemRoleActionPage />} />
               <Route path='system/users' element={<AdminSystemUsersPage />} />
@@ -40,8 +48,8 @@ function App() {
               <Route path='notice/action' element={<AdminNoticeAction />} />
               <Route path='partner' element={<AdminPartnerPage />} />
               <Route path='software' element={<AdminSoftwarePage />} />
+              <Route path='outline' element={<AdminOutlinePage />} />
             </Route>
-            <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </HashRouter>
       </ApolloProvider >

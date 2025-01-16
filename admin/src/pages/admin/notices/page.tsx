@@ -171,7 +171,7 @@ const AdminNoticePage = () => {
       render: (_: any, record: any) => {
         return (
           <Space>
-            <Link to={`/notice/action?id=${record?.id}`}>
+            <Link to={`/admin/notice/action?id=${record?.id}`}>
               <TextViewButton />
             </Link>
             <DelPopover

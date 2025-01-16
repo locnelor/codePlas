@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 // import { PrismaService } from '@app/prisma';
 import { FileService } from '@app/file';
 
+
 const bodyParser = require('body-parser');
 require('body-parser-xml')(bodyParser);
 async function bootstrap() {
@@ -27,6 +28,8 @@ async function bootstrap() {
     ],
     credentials: true
   })
+
+
   // app.useGlobalInterceptors(new LoggingInterceptor(new PrismaService))
   app.use(bodyParser.xml());
   // app.use(bodyParser.urlencoded({ extended: true }));

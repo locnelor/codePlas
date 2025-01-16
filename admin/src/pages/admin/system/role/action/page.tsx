@@ -100,7 +100,7 @@ const AdminSystemRoleActionPage = () => {
   const [createRole] = useMutation<CreateRoleMutationResult>(CreateRoleMutation, {
     onCompleted: ({ createRole }) => {
       message.success("操作成功")
-      nav("/system/role/action?id=" + createRole.id)
+      nav("/admin/system/role/action?id=" + createRole.id)
       client.refetchQueries({
         include: ["GetRole"]
       })
@@ -212,7 +212,7 @@ const AdminSystemRoleActionPage = () => {
 
   return (
     <div>
-      <HeadBack href="/system/role" />
+      <HeadBack href="/admin/system/role" />
       <Row gutter={[20, 20]}>
         <Col span={8} className="">
           <Card className="h-full">

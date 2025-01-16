@@ -1,8 +1,9 @@
-import { Input, InputNumber, Select, Switch } from "antd"
+import { Button, Input, InputNumber, Select, Switch, Upload } from "antd"
 import CoverInput from "./CoverInput"
+import { UploadOutlined } from "@ant-design/icons"
 
 
-export type FormFieldType = "text" | "password" | "number" | "select" | "switch" | "date" | "time" | "checkbox" | "radio" | "textarea" | "cover"
+export type FormFieldType = "file" | "text" | "password" | "number" | "select" | "switch" | "date" | "time" | "checkbox" | "radio" | "textarea" | "cover"
 type FormFieldProps = {
   type?: FormFieldType,
   value?: any,
@@ -71,6 +72,22 @@ function FormField({
         value={value}
         onChange={(e) => onChange(e)}
       />
+    )
+  }
+  if (type === "file") {
+    return (
+      <Upload
+        beforeUpload={() => false}
+        {...rest}
+        fileList={value}
+        onChange={(e) => onChange(e.fileList)}
+      >
+        <Button
+          icon={<UploadOutlined />}
+        >
+          上传文件
+        </Button>
+      </Upload>
     )
   }
 

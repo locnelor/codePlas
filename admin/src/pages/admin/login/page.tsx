@@ -28,7 +28,7 @@ const AdminLoginPage = () => {
   const [auth, { loading }] = useMutation(AuthMutation, {
     onCompleted({ auth }) {
       window.localStorage.setItem("token", auth)
-      nav("/")
+      nav("/admin")
     },
     onError(error) {
       gqlError(error)
@@ -40,7 +40,7 @@ const AdminLoginPage = () => {
   useEffect(() => {
     if (!data) return;
     if (!data.isAdmin) {
-      nav("/init")
+      nav("/admin/init")
     }
   }, [data])
 

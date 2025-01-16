@@ -41,6 +41,10 @@ export class FileService {
     }
     writeFileSync(path, data)
   }
+  public readFile(path: string) {
+    if (!existsSync(path)) return null;
+    return readFileSync(path)
+  }
   public exists(path: string) {
     return existsSync(path)
   }

@@ -94,6 +94,16 @@ type SysSoftwarePlatformEntity {
   description: String!
 }
 
+type SysOutlineEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  order: Int!
+  status: Boolean!
+  comment: String
+  name: String!
+}
+
 type Query {
   getCurrentTotal: Int!
   viewer: SysUserEntity!
@@ -105,6 +115,7 @@ type Query {
   getNoticeById(id: Int!): SysNoticeEntity!
   queryPartner: [SysPartnerEntity!]!
   querySoftware: [SysSoftwarePlatformEntity!]!
+  queryOutline: [SysOutlineEntity!]!
 }
 
 type Mutation {
@@ -126,6 +137,9 @@ type Mutation {
   createSoftware(base64: String!, title: String!, href: String!, description: String!): SysSoftwarePlatformEntity!
   updateSoftware(id: Int!, title: String!, href: String!, description: String!, base64: String): SysSoftwarePlatformEntity!
   deleteSoftware(ids: [Int!]!): Int!
+  createOutline(name: String!, order: Int, status: Boolean, comment: String): SysOutlineEntity!
+  updateOutline(name: String!, order: Int, status: Boolean, comment: String, id: Int!): SysOutlineEntity!
+  deleteOutline(ids: [Int!]!): Int!
 }
 
 input SysMenuOnRoleInput {

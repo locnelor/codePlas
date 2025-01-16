@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import HeadBack from "../../../../components/HeadBack";
 import { BaseFields } from "../../../../queries/base";
-import { NoticeFields } from "../../../../queries/notices";
+import { NoticeEntity, NoticeFields } from "../../../../queries/notices";
 import { UserFields } from "../../../../queries/user";
 import gqlError from "../../../../libs/gql-error";
 
@@ -27,6 +27,9 @@ export const GetNoticeByIdQuery = gql`
     }
   }
 `
+export interface GetNoticeByIdResult {
+  getNoticeById: NoticeEntity
+}
 export const UpdateNoticeContextMutation = gql`
   mutation UpdateNoticeContext(
     $id: Int!,
@@ -46,7 +49,7 @@ const AdminNoticeAction = () => {
   const [update, { loading }] = useMutation(UpdateNoticeContextMutation, {
     onCompleted: () => {
       message.success("保存成功")
-      nav("/notices")
+      nav("/admin/notices")
       client.refetchQueries({
         include: ["GetNotices"]
       })
@@ -86,7 +89,7 @@ const AdminNoticeAction = () => {
   return (
     <Card>
       <HeadBack
-        href="/notices"
+        href="/admin/notices"
       >
         <Button loading={loading} type="primary" onClick={onSave}>保存</Button>
       </HeadBack>

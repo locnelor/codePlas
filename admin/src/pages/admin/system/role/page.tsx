@@ -89,7 +89,7 @@ const AdminSystemRolePage = () => {
       render: (_: any, record: any) => {
         return (
           <Space>
-            <Link to={`/system/role/action?id=${record?.id}`}>
+            <Link to={`/admin/system/role/action?id=${record?.id}`}>
               <TextViewButton />
             </Link>
             <DelPopover
@@ -176,7 +176,7 @@ const AdminSystemRolePage = () => {
           }}
           onChangeItem={onChangeItem}
           onCreate={() => {
-            nav("/system/role/action")
+            nav("/admin/system/role/action")
           }}
         />
       </div>

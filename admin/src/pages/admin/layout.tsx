@@ -23,8 +23,8 @@ const AdminLayout = () => {
   useEffect(() => {
     if (!error) return;
     gqlError(error);
-    if (pathname !== "/login") {
-      nav("/login")
+    if (pathname !== "/admin/login") {
+      nav("/admin/login")
     }
   }, [error])
   if (loading) return <Loading />

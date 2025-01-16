@@ -1,25 +1,26 @@
 import { Col, Row } from "antd"
 import { Link, useLocation } from "react-router"
 
-
+export const hrefSet: { [key in string]: string } = {
+  "/": "首页",
+  "/test": "模拟测试",
+  "/test_info/notice": "考试信息",
+  "/dynamic/notice": "行业动态",
+  "/exams": "试卷下载",
+  "/software": "软件平台",
+  "/partners": "合作机构",
+  "/about": "站点介绍",
+  "/login": "登录",
+  "/register": "注册",
+  "/website/notice": "站务公告",
+  "/experience/notice": "经验交流"
+}
 const Header = () => {
-  const hrefSet = {
-    "/": "首页",
-    "/test": "模拟测试",
-    "/testInfo": "考试信息",
-    "/news": "行业动态",
-    "/exams": "试卷下载",
-    "/software": "软件平台",
-    "/partners": "合作机构",
-    "/about": "站点介绍",
-    "/login": "登录",
-    "/register": "注册"
-  }
   const menu: (keyof typeof hrefSet)[] = [
     "/",
     "/test",
-    "/testInfo",
-    "/news",
+    "/test_info/notice",
+    "/dynamic/notice",
     "/exams",
     "/software",
     "/partners",

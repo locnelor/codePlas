@@ -4,7 +4,6 @@ import { UserEntity, UserFields } from "../../../../queries/user"
 import useRole from "../../../../hooks/useRole"
 import { GetRoleQuery, GetRoleQueryResult } from "../role/page"
 import { Card, Form } from "antd"
-import { useNavigate } from "react-router"
 import { useColumns, useDataSource } from "../../../../hooks/useTable"
 import { FormFactoryItem } from "../../../../components/FormFactory"
 import SearchForm from "../../../../components/SearchForm"
@@ -55,8 +54,6 @@ const AdminSystemUsersPage = () => {
     query: FindUsersQuery,
     name: "findUsers"
   })
-  console.log(data)
-  const nav = useNavigate()
   const roles = roleQuery.data?.getRole || [];
   const columns = useColumns([
     { title: "用户ID", dataIndex: "id" },

@@ -11,17 +11,18 @@ datasource db {
 }
 
 model sys_user {
-  id         Int          @id @default(autoincrement())
-  createAt   DateTime     @default(now())
-  updateAt   DateTime     @default(now()) @updatedAt
-  name       String
-  account    String       @unique
-  role       sys_role?    @relation(fields: [sys_roleId], references: [id])
-  sys_roleId Int?
-  password   String
-  salt       String
-  loginId    String?
-  sys_notice sys_notice[]
+  id             Int              @id @default(autoincrement())
+  createAt       DateTime         @default(now())
+  updateAt       DateTime         @default(now()) @updatedAt
+  name           String
+  account        String           @unique
+  role           sys_role?        @relation(fields: [sys_roleId], references: [id])
+  sys_roleId     Int?
+  password       String
+  salt           String
+  loginId        String?
+  sys_notice     sys_notice[]
+  sys_test_paper sys_test_paper[]
 }
 
 //权限菜单
@@ -90,13 +91,6 @@ model sys_software_platform {
   description String   @db.Text
 }
 
-//模拟测试
-model sys_test {
-  id       Int      @id @default(autoincrement())
-  createAt DateTime @default(now())
-  updateAt DateTime @default(now()) @updatedAt
-}
-
 //合作机构名单
 model sys_partner {
   id       Int      @id @default(autoincrement())
@@ -115,4 +109,126 @@ model sys_outline {
   order    Int      @default(0)
   status   Boolean  @default(true)
   comment  String?  @db.Text
+}
+
+//测试组
+model sys_group {
+  id       Int        @id @default(autoincrement())
+  createAt DateTime   @default(now())
+  updateAt DateTime   @default(now()) @updatedAt
+  name     String
+  sys_test sys_test[]
+}
+
+//模拟测试
+model sys_test {
+  id             Int               @id @default(autoincrement())
+  createAt       DateTime          @default(now())
+  updateAt       DateTime          @default(now()) @updatedAt
+  group          sys_group         @relation(fields: [sys_groupId], references: [id])
+  name           String
+  sources        sys_test_source[]
+  sys_test_group sys_test_group[]
+  sys_groupId    Int
+}
+
+//模拟测试题目组
+model sys_test_group {
+  id               Int                @id @default(autoincrement())
+  createAt         DateTime           @default(now())
+  updateAt         DateTime           @default(now()) @updatedAt
+  PDF              String?
+  PPT              String?
+  name             String
+  is_test          Boolean            @default(false) //是否拥有随机试题
+  order            Int                @default(0)
+  test             sys_test           @relation(fields: [sys_testId], references: [id])
+  sys_testId       Int
+  sys_test_chapter sys_test_chapter[]
+}
+
+//模拟测试题目章节
+model sys_test_chapter {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  updateAt DateTime @default(now()) @updatedAt
+  name     String
+  desc     String?
+  order             Int                 @default(0)
+  test_group        sys_test_group      @relation(fields: [sys_test_groupId], references: [id])
+  sys_test_groupId  Int
+  sys_test_question sys_test_question[]
+  sys_test_paper    sys_test_paper[]
+}
+
+enum sys_test_type {
+  SINGLE //单选
+  MULTIPLE //多选
+  JUDGE //判断
+}
+
+//模拟测试题目
+model sys_test_question {
+  id                         Int                          @id @default(autoincrement())
+  createAt                   DateTime                     @default(now())
+  updateAt                   DateTime                     @default(now()) @updatedAt
+  title                      String
+  answer                     String                       @db.Text
+  type                       sys_test_type
+  context                    String                       @db.Text
+  order                      Int                          @default(0)
+  chapter                    sys_test_chapter             @relation(fields: [sys_test_chapterId], references: [id])
+  sys_test_chapterId         Int
+  test_count                 Int                          @default(0)
+  test_right_count           Int                          @default(0)
+  sys_test_paper_on_question sys_test_paper_on_question[]
+}
+
+//模拟测试资源
+model sys_test_source {
+  id         Int       @id @default(autoincrement())
+  createAt   DateTime  @default(now())
+  updateAt   DateTime  @default(now()) @updatedAt
+  name       String
+  href       String
+  sys_test   sys_test? @relation(fields: [sys_testId], references: [id])
+  sys_testId Int?
+}
+
+//考试
+model sys_test_paper {
+  id                      Int                       @id @default(autoincrement())
+  createAt                DateTime                  @default(now())
+  updateAt                DateTime                  @default(now()) @updatedAt
+  user                    sys_user                  @relation(fields: [sys_userId], references: [id])
+  sys_userId              Int
+  paper                   sys_test_chapter          @relation(fields: [sys_test_chapterId], references: [id])
+  sys_test_chapterId      Int
+  is_end                  Boolean                   @default(false)
+  correct                 Int                       @default(0)
+  wrong                   Int                       @default(0)
+  un_answer               Int                       @default(0)
+  score                   Int                       @default(0)
+  sys_test_paper_question sys_test_paper_question[]
+}
+
+//考试题目 on 考试
+model sys_test_paper_on_question {
+  paper                     sys_test_paper_question @relation(fields: [sys_test_paper_questionId], references: [id])
+  sys_test_paper_questionId Int
+  question                  sys_test_question       @relation(fields: [sys_test_questionId], references: [id])
+  sys_test_questionId       Int
+  answer                    String?
+
+  @@id([sys_test_paper_questionId, sys_test_questionId])
+}
+
+// 考试题目
+model sys_test_paper_question {
+  id               Int                          @id @default(autoincrement())
+  createAt         DateTime                     @default(now())
+  updateAt         DateTime                     @default(now()) @updatedAt
+  paper            sys_test_paper               @relation(fields: [sys_test_paperId], references: [id])
+  sys_test_paperId Int
+  questions        sys_test_paper_on_question[]
 }

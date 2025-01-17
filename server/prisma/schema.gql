@@ -104,6 +104,107 @@ type SysOutlineEntity {
   name: String!
 }
 
+type SysGroupEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+}
+
+type SysTestSourceEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  href: String!
+  sys_testId: Int!
+  sys_test: SysTestEntity
+}
+
+type SysTestPaperEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_userId: Int!
+  sys_test_chapterId: Int!
+  is_end: Boolean!
+  correct: Int!
+  wrong: Int!
+  un_answer: Int!
+  score: Int!
+  sys_test_paper_question: [SysTestPaperQuestionEntity!]
+}
+
+type SysTestPaperQuestionEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_test_paperId: Int!
+  paper: SysTestPaperEntity
+  questions: [SysTestPaperOnQuestionEntity!]
+}
+
+type SysTestPaperOnQuestionEntity {
+  sys_test_paper_questionId: Int!
+  sys_test_questionId: Int!
+  answer: String!
+  paper: [SysTestPaperQuestionEntity!]
+  question: [SysTestQuestionEntity!]
+}
+
+type SysTestQuestionEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  title: String!
+  answer: String!
+  type: String!
+  context: String!
+  order: Int!
+  sys_test_chapterId: Int!
+  test_count: Int!
+  test_right_count: Int!
+  chapter: SysTestChapterEntity
+  sys_test_paper_on_question: [SysTestPaperOnQuestionEntity!]
+}
+
+type SysTestChapterEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  sys_test_groupId: Int!
+  sys_test_question: [SysTestQuestionEntity!]
+  sys_test_paper: [SysTestPaperEntity!]
+  desc: String
+}
+
+type SysTestEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  sys_groupId: Int!
+  name: String!
+  group: SysGroupEntity
+  sources: [SysTestSourceEntity!]
+  sys_test_chapter: [SysTestChapterEntity!]
+}
+
+type SysTestGroupEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  is_test: Boolean!
+  name: String!
+  order: Int!
+  sys_testId: Int!
+  sys_test_chapter: [SysTestChapterEntity!]
+  PDF: String!
+  PPT: String!
+  test: Boolean!
+}
+
 type Query {
   getCurrentTotal: Int!
   viewer: SysUserEntity!
@@ -116,6 +217,10 @@ type Query {
   queryPartner: [SysPartnerEntity!]!
   querySoftware: [SysSoftwarePlatformEntity!]!
   queryOutline: [SysOutlineEntity!]!
+  queryGroups: [SysGroupEntity!]!
+  queryTests(sys_groupId: Int!): [SysTestEntity!]!
+  queryTestChapter(sys_test_groupId: Int): [SysTestChapterEntity!]!
+  queryTestQuestion(sys_test_chapterId: Int!): [SysTestQuestionEntity!]!
 }
 
 type Mutation {
@@ -140,6 +245,21 @@ type Mutation {
   createOutline(name: String!, order: Int, status: Boolean, comment: String): SysOutlineEntity!
   updateOutline(name: String!, order: Int, status: Boolean, comment: String, id: Int!): SysOutlineEntity!
   deleteOutline(ids: [Int!]!): Int!
+  createGroup(name: String!, base64: String!): SysGroupEntity!
+  updateGroup(id: Int!, name: String!, base64: String): SysGroupEntity!
+  deleteGroup(id: Int!): SysGroupEntity!
+  createTest(sys_groupId: Int!, name: String!, base64: String!): SysTestEntity!
+  updateTest(id: Int!, name: String!, base64: String): SysTestEntity!
+  deleteTest(id: Int!): SysTestEntity!
+  createTestGroup(sys_testId: Int!, name: String!, PDF: String, PPT: String, is_test: Boolean): SysTestGroupEntity!
+  updateTestGroup(id: Int!, name: String!, PDF: String, PPT: String, is_test: Boolean): SysTestGroupEntity!
+  deleteTestGroup(id: Int!): SysTestGroupEntity!
+  createTestChapter(sys_test_groupId: Int!, name: String!, order: Int, desc: String): SysTestChapterEntity!
+  updateTestChapter(id: Int!, name: String!, order: Int, desc: String): SysTestChapterEntity!
+  deleteTestChapter(id: Int!): SysTestChapterEntity!
+  createTestQuestion(title: String!, answer: String!, type: String!, context: String!, sys_test_chapterId: Int!, order: Int): SysTestQuestionEntity!
+  updateTestQuestion(id: Int!, title: String!, answer: String!, type: String!, context: String!, sys_test_chapterId: Int!, order: Int): SysTestQuestionEntity!
+  deleteTestQuestion(id: Int!): SysTestQuestionEntity!
 }
 
 input SysMenuOnRoleInput {

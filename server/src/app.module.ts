@@ -15,6 +15,8 @@ import { PartnerModule } from './partner/partner.module';
 import { SoftwareModule } from './software/software.module';
 import { MediaModule } from './media/media.module';
 import { OutlineModule } from './outline/outline.module';
+import { TestModule } from './test/test.module';
+import { TestPaperModule } from './test_paper/test_paper.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -79,7 +81,9 @@ import { OutlineModule } from './outline/outline.module';
     PartnerModule,
     SoftwareModule,
     MediaModule,
-    OutlineModule
+    OutlineModule,
+    TestModule,
+    TestPaperModule
   ],
   controllers: [AppController],
   providers: [AppService],

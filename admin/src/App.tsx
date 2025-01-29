@@ -22,6 +22,11 @@ import AdminOutlinePage from './pages/admin/outline/page'
 import NoticePage from './pages/notice/page'
 import SoftwarePage from './pages/software/page'
 import PartnerPage from './pages/partners/page'
+import AdminTestPage from './pages/admin/test/page'
+import AdminTestGroupPage from './pages/admin/test/group/page'
+import AdminTestGroupChapterPage from './pages/admin/test/group/chapter/page'
+import AdminTestGroupChapterQuestionPage from './pages/admin/test/group/chapter/paper/question/page'
+import AdminTesgroupChapterPaperPage from './pages/admin/test/group/chapter/paper/page'
 
 function App() {
   const client = makeClient()
@@ -49,6 +54,10 @@ function App() {
               <Route path='partner' element={<AdminPartnerPage />} />
               <Route path='software' element={<AdminSoftwarePage />} />
               <Route path='outline' element={<AdminOutlinePage />} />
+              <Route path='test' element={<AdminTestPage />} />
+              <Route path='test/:groupId/group' element={<AdminTestGroupPage />} />
+              <Route path='test/:groupId/group/:testId/chapter' element={<AdminTestGroupChapterPage />} />
+              <Route path='test/:groupId/group/:testId/chapter/:chapterId/question' element={<AdminTesgroupChapterPaperPage />} />
             </Route>
           </Routes>
         </HashRouter>

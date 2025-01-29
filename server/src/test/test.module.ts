@@ -9,6 +9,7 @@ import { TestService } from './test.service';
     FileModule,
     PrismaModule
   ],
-  providers: [TestResolver, TestService]
+  providers: [TestResolver, TestService],
+  exports: [TestService]
 })
 export class TestModule { }

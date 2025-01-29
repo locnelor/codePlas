@@ -1,31 +1,32 @@
-import { Field, Int, ObjectType } from "@nestjs/graphql";
-import { BaseEntity } from "../base.entity/base.entity";
 import { sys_test_paper } from "@prisma/client";
-import { SysTestPaperQuestionEntity } from "../sys.test.paper.question.entity/sys.test.paper.question.entity";
+import { BaseEntity } from "../base.entity/base.entity";
+import { Field, Int, ObjectType } from "@nestjs/graphql";
+import { SysTestChapterEntity } from "../sys.test.chapter.entity/sys.test.chapter.entity";
+import { SysTestQuestionEntity } from "../sys.test.question.entity/sys.test.question.entity";
 
 @ObjectType()
 export class SysTestPaperEntity extends BaseEntity implements sys_test_paper {
+  @Field()
+  name: string;
+
   @Field(() => Int)
-  sys_userId: number;
+  order: number;
+
+  @Field(() => Boolean)
+  status: boolean;
+
+  @Field({ nullable: true })
+  desc: string;
 
   @Field(() => Int)
   sys_test_chapterId: number;
 
   @Field(() => Boolean)
-  is_end: boolean;
+  is_free: boolean;
 
-  @Field(() => Int)
-  correct: number;
+  @Field(() => SysTestChapterEntity, { nullable: true })
+  chapter?: SysTestChapterEntity
 
-  @Field(() => Int)
-  wrong: number;
-
-  @Field(() => Int)
-  un_answer: number;
-
-  @Field(() => Int)
-  score: number;
-
-  @Field(() => [SysTestPaperQuestionEntity], { nullable: true })
-  sys_test_paper_question?: SysTestPaperQuestionEntity[];
+  @Field(() => [SysTestQuestionEntity], { nullable: true })
+  questions?: SysTestQuestionEntity[]
 }

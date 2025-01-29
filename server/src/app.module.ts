@@ -17,6 +17,7 @@ import { MediaModule } from './media/media.module';
 import { OutlineModule } from './outline/outline.module';
 import { TestModule } from './test/test.module';
 import { TestPaperModule } from './test_paper/test_paper.module';
+import { QuestionModule } from './question/question.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -83,7 +84,8 @@ import { TestPaperModule } from './test_paper/test_paper.module';
     MediaModule,
     OutlineModule,
     TestModule,
-    TestPaperModule
+    TestPaperModule,
+    QuestionModule
   ],
   controllers: [AppController],
   providers: [AppService],

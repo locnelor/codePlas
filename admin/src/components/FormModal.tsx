@@ -3,6 +3,7 @@ import FormFactory, { FormFactoryItem } from "./FormFactory"
 import { DocumentNode } from "graphql"
 import { useState } from "react"
 import { useMutation } from "@apollo/client"
+import { AnyObject } from "../type"
 
 
 export type FormModalProps = {
@@ -13,7 +14,8 @@ export type FormModalProps = {
   onCancel: () => void,
   title?: string,
   options: FormFactoryItem[],
-  form: FormInstance<any>
+  form: FormInstance<any>,
+  variables?: AnyObject
 }
 const FormModal = ({
   query,
@@ -23,7 +25,8 @@ const FormModal = ({
   onError = (error) => message.error(error.message),
   onCancel,
   options,
-  form
+  form,
+  variables
 }: FormModalProps) => {
   const [loading, setLoading] = useState(false);
   const [mutation] = useMutation(query, {
@@ -49,10 +52,13 @@ const FormModal = ({
         options={options}
         formProps={{
           form,
-          onFinish: (variables) => {
+          onFinish: (data) => {
             setLoading(true)
             mutation({
-              variables
+              variables: {
+                ...variables,
+                ...data
+              }
             })
           }
         }}

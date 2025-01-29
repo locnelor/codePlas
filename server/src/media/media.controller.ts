@@ -31,7 +31,7 @@ export class MediaController {
     @Res() res: Response
   ) {
     id *= 1;
-    const entity = await this.prisma.sys_group.findUnique({ where: { id } })
+    const entity = await this.prisma.sys_test_group.findUnique({ where: { id } })
     if (!entity) throw new NotFoundException()
     res.sendFile(this.test.getGroupAvatarPath(entity))
   }

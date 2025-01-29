@@ -1,5 +1,5 @@
 import { FileService } from '@app/file';
-import { SysGroupEntity } from '@app/prisma/sys.group.entity/sys.group.entity';
+import { SysTestGroupEntity } from '@app/prisma/sys.test.group.entity/sys.test.group.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -8,12 +8,12 @@ export class TestService {
     private readonly file: FileService
   ) { }
   public GroupAvatarRoot = this.file.make("test_group")
-  getGroupAvatarPath(entity: SysGroupEntity) {
+  getGroupAvatarPath(entity: SysTestGroupEntity) {
     return this.file.join(this.GroupAvatarRoot, entity.id.toString() + ".png")
   }
 
   public TestAvatarRoot = this.file.make("test")
-  getTestAvatarPath(entity: SysGroupEntity) {
+  getTestAvatarPath(entity: SysTestGroupEntity) {
     return this.file.join(this.TestAvatarRoot, entity.id.toString() + ".png")
   }
 

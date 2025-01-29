@@ -94,6 +94,77 @@ type SysSoftwarePlatformEntity {
   description: String!
 }
 
+type SysTestQuestionEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  status: Boolean!
+  desc: String
+}
+
+type SysTestPaperEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  status: Boolean!
+  desc: String
+  sys_test_chapterId: Int!
+  is_free: Boolean!
+  chapter: SysTestChapterEntity
+  questions: [SysTestQuestionEntity!]
+}
+
+type SysTestChapterEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  status: Boolean!
+  desc: String
+  single_count: Int!
+  multiple_count: Int!
+  judge_count: Int!
+  PPT: String
+  PDF: String
+  video: String
+  one2one: String
+  outline: String
+  money: Int!
+  is_test: Boolean!
+  sys_testId: Int!
+  sys_test: SysTestEntity
+  papers: [SysTestPaperEntity!]
+}
+
+type SysTestEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  status: Boolean!
+  desc: String
+  sys_test_groupId: Int!
+  sys_test_group: SysTestGroupEntity
+  chapters: [SysTestChapterEntity!]
+}
+
+type SysTestGroupEntity {
+  id: Int!
+  createAt: DateTime!
+  updateAt: DateTime!
+  name: String!
+  order: Int!
+  status: Boolean!
+  desc: String
+  tests: [SysTestEntity!]
+}
+
 type SysOutlineEntity {
   id: Int!
   createAt: DateTime!
@@ -115,6 +186,10 @@ type Query {
   getNoticeById(id: Int!): SysNoticeEntity!
   queryPartner: [SysPartnerEntity!]!
   querySoftware: [SysSoftwarePlatformEntity!]!
+  queryTestGroups: [SysTestGroupEntity!]!
+  queryTests: [SysTestEntity!]!
+  queryTestChapters: [SysTestChapterEntity!]!
+  queryTestPapers: [SysTestPaperEntity!]!
   queryOutline: [SysOutlineEntity!]!
 }
 
@@ -137,6 +212,18 @@ type Mutation {
   createSoftware(base64: String!, title: String!, href: String!, description: String!): SysSoftwarePlatformEntity!
   updateSoftware(id: Int!, title: String!, href: String!, description: String!, base64: String): SysSoftwarePlatformEntity!
   deleteSoftware(ids: [Int!]!): Int!
+  createTestGroup(name: String!, base64: String!, desc: String, order: Float, status: Boolean): SysTestGroupEntity!
+  updateTestGroup(id: Int!, name: String!, base64: String, desc: String, order: Float, status: Boolean): SysTestGroupEntity!
+  deleteTestGroup(id: Int!): SysTestGroupEntity!
+  createTest(name: String!, base64: String!, sys_test_groupId: Int!, desc: String, order: Float, status: Boolean): SysTestEntity!
+  updateTest(id: Int!, name: String!, sys_test_groupId: Int!, desc: String, order: Float, status: Boolean, base64: String): SysTestEntity!
+  deleteTest(id: Int!): SysTestEntity!
+  createTestChapter(name: String!, sys_testId: Int!, money: Int!, is_test: Boolean!, desc: String, order: Float, status: Boolean, PPT: String, PDF: String, video: String, one2one: String, outline: String): SysTestChapterEntity!
+  updateTestChapter(id: Int!, name: String!, money: Int!, is_test: Boolean!, desc: String, order: Float, status: Boolean, PPT: String, PDF: String, video: String, one2one: String, outline: String): SysTestChapterEntity!
+  deleteTestChapter(id: Int!): SysTestChapterEntity!
+  createTestPaper(name: String!, sys_test_chapterId: Int!, desc: String, order: Float, status: Boolean, is_free: Boolean): SysTestPaperEntity!
+  updateTestPaper(id: Int!, name: String!, desc: String, order: Float, status: Boolean, is_free: Boolean): SysTestPaperEntity!
+  deleteTestPaper(id: Int!): SysTestPaperEntity!
   createOutline(name: String!, order: Int, status: Boolean, comment: String): SysOutlineEntity!
   updateOutline(name: String!, order: Int, status: Boolean, comment: String, id: Int!): SysOutlineEntity!
   deleteOutline(ids: [Int!]!): Int!
